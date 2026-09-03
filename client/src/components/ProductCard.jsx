@@ -9,43 +9,45 @@ export default function ProductCard({ product }) {
   return (
     <Link
       to={`/products/${product.slug}`}
-      className="block bg-white border border-gray-200 hover:border-gray-300 transition-colors"
+      className="group block bg-white rounded-lg border border-[#E4E2DC] hover:border-[#C7C4BC] transition-colors overflow-hidden"
     >
-      <div className="aspect-square bg-gray-50 flex items-center justify-center p-6">
+      <div className="aspect-square bg-[#F3F2EE] flex items-center justify-center p-10 relative">
         <img
           src={product.images[0]}
           alt={product.name}
           className="max-h-full max-w-full object-contain"
         />
+        {firstVariant.mrp > firstVariant.price && (
+          <div className="absolute top-3 left-3 bg-white text-[#1B7A43] text-[12px] font-semibold px-2 py-1 rounded border border-[#E4E2DC]">
+            {discount}% off
+          </div>
+        )}
       </div>
-      <div className="p-4 border-t border-gray-100">
-        <p className="text-xs text-gray-500 uppercase tracking-wide">
+      <div className="p-5">
+        <p className="text-[12px] text-[#8A8F99] font-medium mb-1">
           {product.brand}
         </p>
-        <h2 className="text-sm font-semibold text-gray-900 mt-1">
+        <h2 className="text-[15px] font-semibold text-[#14181F] leading-snug mb-3 line-clamp-1">
           {product.name}
         </h2>
-        <div className="mt-2 flex items-baseline gap-2">
-          <span className="text-base font-bold text-gray-900">
+
+        <div className="flex items-baseline gap-2">
+          <span className="text-[20px] font-semibold tracking-tight">
             ₹{firstVariant.price.toLocaleString("en-IN")}
           </span>
           {firstVariant.mrp > firstVariant.price && (
-            <>
-              <span className="text-xs text-gray-400 line-through">
-                ₹{firstVariant.mrp.toLocaleString("en-IN")}
-              </span>
-              <span className="text-xs text-green-600 font-medium">
-                {discount}% off
-              </span>
-            </>
+            <span className="text-[13px] text-[#8A8F99] line-through">
+              ₹{firstVariant.mrp.toLocaleString("en-IN")}
+            </span>
           )}
         </div>
-        <p className="text-xs text-gray-500 mt-2">
-          EMI from{" "}
-          <span className="font-medium text-gray-700">
+
+        <div className="mt-3 pt-3 border-t border-[#E4E2DC] flex items-baseline gap-1.5">
+          <span className="text-[12px] text-[#8A8F99]">EMI from</span>
+          <span className="text-[14px] font-semibold text-[#2B3A67]">
             ₹{product.lowestEmi.toLocaleString("en-IN")}/mo
           </span>
-        </p>
+        </div>
       </div>
     </Link>
   );
