@@ -1,15 +1,15 @@
 node_modules
-.DS_Store
 dist
+dist-ssr
+.DS_Store
+
 # Environment variables
 .env
 .env.*
 .env*.local
 *.env
-.env
-.env.*
-*.env
 !.env.example
+
 # Logs
 logs
 *.log
@@ -19,19 +19,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Local config
 *.local
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-

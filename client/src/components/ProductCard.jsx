@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ product }) {
+  const firstVariant = product.variants[0];
   const discount = Math.round(
-    ((product.mrp - product.price) / product.mrp) * 100
+    ((firstVariant.mrp - firstVariant.price) / firstVariant.mrp) * 100
   );
-  const lowestEmi = Math.min(...product.emiPlans.map((p) => p.monthly));
 
   return (
     <Link
@@ -13,7 +13,7 @@ export default function ProductCard({ product }) {
     >
       <div className="aspect-square bg-gray-50 flex items-center justify-center p-6">
         <img
-          src={product.image}
+          src={product.images[0]}
           alt={product.name}
           className="max-h-full max-w-full object-contain"
         />
@@ -27,12 +27,12 @@ export default function ProductCard({ product }) {
         </h2>
         <div className="mt-2 flex items-baseline gap-2">
           <span className="text-base font-bold text-gray-900">
-            ₹{product.price.toLocaleString("en-IN")}
+            ₹{firstVariant.price.toLocaleString("en-IN")}
           </span>
-          {product.mrp > product.price && (
+          {firstVariant.mrp > firstVariant.price && (
             <>
               <span className="text-xs text-gray-400 line-through">
-                ₹{product.mrp.toLocaleString("en-IN")}
+                ₹{firstVariant.mrp.toLocaleString("en-IN")}
               </span>
               <span className="text-xs text-green-600 font-medium">
                 {discount}% off
@@ -43,7 +43,7 @@ export default function ProductCard({ product }) {
         <p className="text-xs text-gray-500 mt-2">
           EMI from{" "}
           <span className="font-medium text-gray-700">
-            ₹{lowestEmi.toLocaleString("en-IN")}/mo
+            ₹{product.lowestEmi.toLocaleString("en-IN")}/mo
           </span>
         </p>
       </div>

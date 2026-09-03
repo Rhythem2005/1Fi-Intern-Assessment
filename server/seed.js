@@ -139,11 +139,14 @@ async function seed() {
     await mongoose.connect(uri);
     console.log("Connected to MongoDB");
 
-    await Product.deleteMany({});
-    console.log("Cleared existing products");
-
-    const inserted = await Product.insertMany(products);
-    console.log(`Seeded ${inserted.length} products`);
+    for (const product of products) {
+      await Product.findOneAndUpdate(
+        { slug: product.slug },
+        { $set: product },
+        { upsert: true, returnDocument: "after" }
+      );
+      console.log(`Upserted: ${product.name}`);
+    }
 
     await mongoose.disconnect();
     console.log("Done");
