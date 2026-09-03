@@ -22,10 +22,10 @@ const products = [
         mrp: 134900,
         price: 127900,
         emiPlans: [
-          { tenure: 3, monthly: 42634, interest: 0, cashback: null },
-          { tenure: 6, monthly: 22317, interest: 5, cashback: "₹500 cashback" },
-          { tenure: 12, monthly: 11917, interest: 12, cashback: "₹1,000 cashback" },
-          { tenure: 24, monthly: 6450, interest: 14, cashback: null },
+          { tenure: 3, monthly: 42633, interest: 0, cashback: null },
+          { tenure: 6, monthly: 21629, interest: 5, cashback: "₹500 cashback" },
+          { tenure: 12, monthly: 11364, interest: 12, cashback: "₹1,000 cashback" },
+          { tenure: 24, monthly: 6141, interest: 14, cashback: null },
         ],
       },
       {
@@ -34,9 +34,9 @@ const products = [
         price: 137900,
         emiPlans: [
           { tenure: 3, monthly: 45967, interest: 0, cashback: null },
-          { tenure: 6, monthly: 24075, interest: 5, cashback: "₹500 cashback" },
-          { tenure: 12, monthly: 12858, interest: 12, cashback: "₹1,500 cashback" },
-          { tenure: 24, monthly: 6967, interest: 14, cashback: null },
+          { tenure: 6, monthly: 23320, interest: 5, cashback: "₹500 cashback" },
+          { tenure: 12, monthly: 12252, interest: 12, cashback: "₹1,500 cashback" },
+          { tenure: 24, monthly: 6621, interest: 14, cashback: null },
         ],
       },
       {
@@ -44,10 +44,10 @@ const products = [
         mrp: 164900,
         price: 157900,
         emiPlans: [
-          { tenure: 3, monthly: 52634, interest: 0, cashback: null },
-          { tenure: 6, monthly: 27575, interest: 5, cashback: null },
-          { tenure: 12, monthly: 14725, interest: 12, cashback: "₹2,000 cashback" },
-          { tenure: 24, monthly: 7979, interest: 14, cashback: null },
+          { tenure: 3, monthly: 52633, interest: 0, cashback: null },
+          { tenure: 6, monthly: 26702, interest: 5, cashback: null },
+          { tenure: 12, monthly: 14029, interest: 12, cashback: "₹2,000 cashback" },
+          { tenure: 24, monthly: 7581, interest: 14, cashback: null },
         ],
       },
     ],
@@ -71,9 +71,9 @@ const products = [
         price: 129999,
         emiPlans: [
           { tenure: 3, monthly: 43333, interest: 0, cashback: null },
-          { tenure: 6, monthly: 22750, interest: 5, cashback: null },
-          { tenure: 12, monthly: 11917, interest: 10, cashback: "₹750 cashback" },
-          { tenure: 18, monthly: 8333, interest: 12, cashback: "₹1,500 cashback" },
+          { tenure: 6, monthly: 21984, interest: 5, cashback: null },
+          { tenure: 12, monthly: 11429, interest: 10, cashback: "₹750 cashback" },
+          { tenure: 18, monthly: 7928, interest: 12, cashback: "₹1,500 cashback" },
         ],
       },
       {
@@ -82,9 +82,9 @@ const products = [
         price: 144999,
         emiPlans: [
           { tenure: 3, monthly: 48333, interest: 0, cashback: null },
-          { tenure: 6, monthly: 25375, interest: 5, cashback: "₹500 cashback" },
-          { tenure: 12, monthly: 13292, interest: 10, cashback: "₹1,000 cashback" },
-          { tenure: 18, monthly: 9306, interest: 12, cashback: null },
+          { tenure: 6, monthly: 24520, interest: 5, cashback: "₹500 cashback" },
+          { tenure: 12, monthly: 12748, interest: 10, cashback: "₹1,000 cashback" },
+          { tenure: 18, monthly: 8842, interest: 12, cashback: null },
         ],
       },
     ],
@@ -108,9 +108,9 @@ const products = [
         price: 101999,
         emiPlans: [
           { tenure: 3, monthly: 34000, interest: 0, cashback: null },
-          { tenure: 6, monthly: 17833, interest: 5, cashback: "₹500 cashback" },
-          { tenure: 9, monthly: 12222, interest: 8, cashback: null },
-          { tenure: 12, monthly: 9350, interest: 10, cashback: "₹1,000 cashback" },
+          { tenure: 6, monthly: 17249, interest: 5, cashback: "₹500 cashback" },
+          { tenure: 9, monthly: 11714, interest: 8, cashback: null },
+          { tenure: 12, monthly: 8967, interest: 10, cashback: "₹1,000 cashback" },
         ],
       },
       {
@@ -119,9 +119,9 @@ const products = [
         price: 111999,
         emiPlans: [
           { tenure: 3, monthly: 37333, interest: 0, cashback: null },
-          { tenure: 6, monthly: 19600, interest: 5, cashback: null },
-          { tenure: 9, monthly: 13444, interest: 8, cashback: "₹500 cashback" },
-          { tenure: 12, monthly: 10267, interest: 10, cashback: "₹1,000 cashback" },
+          { tenure: 6, monthly: 18940, interest: 5, cashback: null },
+          { tenure: 9, monthly: 12863, interest: 8, cashback: "₹500 cashback" },
+          { tenure: 12, monthly: 9846, interest: 10, cashback: "₹1,000 cashback" },
         ],
       },
     ],
@@ -143,8 +143,8 @@ const products = [
         price: 64999,
         emiPlans: [
           { tenure: 3, monthly: 21666, interest: 0, cashback: null },
-          { tenure: 6, monthly: 11104, interest: 5, cashback: "₹500 cashback" },
-          { tenure: 12, monthly: 5958, interest: 10, cashback: null }
+          { tenure: 6, monthly: 10992, interest: 5, cashback: "₹500 cashback" },
+          { tenure: 12, monthly: 5714, interest: 10, cashback: null }
         ]
       },
       {
@@ -153,8 +153,8 @@ const products = [
         price: 69999,
         emiPlans: [
           { tenure: 3, monthly: 23333, interest: 0, cashback: null },
-          { tenure: 6, monthly: 11958, interest: 5, cashback: "₹1,000 cashback" },
-          { tenure: 12, monthly: 6417, interest: 10, cashback: null }
+          { tenure: 6, monthly: 11837, interest: 5, cashback: "₹1,000 cashback" },
+          { tenure: 12, monthly: 6154, interest: 10, cashback: null }
         ]
       }
     ]
@@ -177,8 +177,8 @@ const products = [
         price: 154999,
         emiPlans: [
           { tenure: 3, monthly: 51666, interest: 0, cashback: null },
-          { tenure: 6, monthly: 26479, interest: 5, cashback: "₹1,000 cashback" },
-          { tenure: 12, monthly: 14208, interest: 10, cashback: "₹2,000 cashback" }
+          { tenure: 6, monthly: 26211, interest: 5, cashback: "₹1,000 cashback" },
+          { tenure: 12, monthly: 13627, interest: 10, cashback: "₹2,000 cashback" }
         ]
       },
       {
@@ -187,8 +187,8 @@ const products = [
         price: 164999,
         emiPlans: [
           { tenure: 3, monthly: 55000, interest: 0, cashback: null },
-          { tenure: 6, monthly: 28187, interest: 5, cashback: "₹1,000 cashback" },
-          { tenure: 12, monthly: 15125, interest: 10, cashback: "₹2,500 cashback" }
+          { tenure: 6, monthly: 27902, interest: 5, cashback: "₹1,000 cashback" },
+          { tenure: 12, monthly: 14506, interest: 10, cashback: "₹2,500 cashback" }
         ]
       }
     ]
@@ -211,8 +211,8 @@ const products = [
         price: 148900,
         emiPlans: [
           { tenure: 3, monthly: 49633, interest: 0, cashback: null },
-          { tenure: 6, monthly: 25437, interest: 5, cashback: null },
-          { tenure: 12, monthly: 13897, interest: 12, cashback: "₹1,000 cashback" }
+          { tenure: 6, monthly: 25180, interest: 5, cashback: null },
+          { tenure: 12, monthly: 13230, interest: 12, cashback: "₹1,000 cashback" }
         ]
       },
       {
@@ -221,8 +221,8 @@ const products = [
         price: 168900,
         emiPlans: [
           { tenure: 3, monthly: 56300, interest: 0, cashback: null },
-          { tenure: 6, monthly: 28854, interest: 5, cashback: null },
-          { tenure: 12, monthly: 15764, interest: 12, cashback: "₹1,500 cashback" }
+          { tenure: 6, monthly: 28562, interest: 5, cashback: null },
+          { tenure: 12, monthly: 15007, interest: 12, cashback: "₹1,500 cashback" }
         ]
       }
     ]
