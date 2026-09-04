@@ -13,7 +13,7 @@ function App() {
                 1Fi
               </div>
               <span className="text-[17px] font-semibold tracking-tight">
-                1Fi-intern-assesement
+                1Fi-Intern-Assessment
               </span>
             </Link>
             <nav className="hidden sm:flex items-center gap-8 text-[14px] font-medium text-[#5B6270]">
