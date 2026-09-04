@@ -315,13 +315,10 @@ Frontend: `http://localhost:5173`
 
 ---
 
-## 📝 Notes
 
 This project implements the EMI-plan and mutual-fund backing representation required for the assessment. It does **not** implement real financial transactions, mutual-fund investments, KYC, payment processing, or live NAV calculations.
 
 ---
-
-## 📄 License
 
 This project was created for an internship assessment.
 
