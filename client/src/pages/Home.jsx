@@ -41,14 +41,14 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-5 sm:px-8 py-14 md:py-20">
           <div className="max-w-xl">
             <p className="text-[13px] font-semibold text-[#2B3A67] mb-3">
-              No cost EMI available
+              Flexible EMI plans available
             </p>
             <h1 className="text-[32px] sm:text-[40px] font-semibold tracking-tight leading-[1.1] mb-4">
               Get the device you want, pay a little every month.
             </h1>
             <p className="text-[15px] text-[#5B6270] leading-relaxed">
               Choose from flexible EMI plans on every product, with clear
-              pricing and no surprises at checkout.
+              pricing and transparent monthly payments.
             </p>
           </div>
         </div>

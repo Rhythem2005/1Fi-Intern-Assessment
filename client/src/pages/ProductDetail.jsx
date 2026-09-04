@@ -326,7 +326,7 @@ export default function ProductDetail() {
             </button>
             {selectedPlan != null && (
               <p className="text-center text-xs font-bold text-gray-400 mt-4 uppercase tracking-widest hidden sm:block">
-                Secure SSL Transaction
+                Demo checkout
               </p>
             )}
           </div>
@@ -459,12 +459,12 @@ export default function ProductDetail() {
                   </button>
                   <button
                     onClick={() => {
-                      alert("Order Placed Successfully! (Demo)");
+                      alert("EMI Plan Selected Successfully! (Demo)");
                       setShowModal(false);
                     }}
                     className="flex-1 py-3 text-sm font-bold rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition-all shadow-sm hover:shadow cursor-pointer"
                   >
-                    Confirm Order
+                    Confirm Selection
                   </button>
                 </div>
               </div>

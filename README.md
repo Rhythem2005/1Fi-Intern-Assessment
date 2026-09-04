@@ -1,260 +1,358 @@
-# 1Fi-intern-assesement — Product EMI Web Application
+1Fi-intern-assesement — Product EMI Web Application
 
-A full-stack web application where users can browse products, select variants (storage/color), view available EMI plans, and proceed with a selected plan. All product and EMI data is stored in MongoDB and served through a REST API.
+A full-stack product browsing and EMI selection web application built for the internship assessment. Users can browse products, select storage and color variants, view pricing and available EMI plans, and proceed with a selected EMI plan.
 
-## Features
+Features
 
-- Dynamic product listing fetched from the database
-- Individual product pages with unique URLs (`/products/:slug`)
-- Product variants — storage and color selection
-- MRP (struck through) and selling price display per variant
-- Multiple EMI plans per variant with monthly payment, tenure, interest rate, and cashback
-- Single EMI plan selection with visual radio-button behavior
-- Proceed button with in-page confirmation modal showing order summary
-- Responsive layout for mobile, tablet, and desktop
-- Loading and error states for API calls
+Dynamic product listing from the backend API
 
-## Tech Stack
+Product detail pages with unique URLs using /products/:slug
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 19, Vite 8, Tailwind CSS 4, React Router 7 |
-| Backend | Node.js, Express 5, CORS |
-| Database | MongoDB, Mongoose 9 |
-| Environment | dotenv |
+Multiple products with multiple storage and color variants
 
-## Project Structure
+Dynamic product images served from product/variant data
 
-```
-├── client/                     # React frontend
-│   ├── public/images/          # Product images
-│   ├── src/
-│   │   ├── components/
-│   │   │   └── ProductCard.jsx # Product card for listing page
-│   │   ├── pages/
-│   │   │   ├── Home.jsx        # Product listing page
-│   │   │   └── ProductDetail.jsx # Product detail + EMI selection
-│   │   ├── App.jsx             # Routes and layout
-│   │   ├── main.jsx            # Entry point
-│   │   └── index.css           # Tailwind imports
-│   └── vite.config.js          # Vite config with API proxy
+MRP and selling-price display
+
+Multiple EMI plans for each product variant
+
+EMI details including monthly payment, tenure, interest rate, cashback, and mutual-fund backing information
+
+Single EMI plan selection before proceeding
+
+Selection confirmation modal
+
+Responsive UI
+
+Loading and error states
+
+MongoDB-backed product and EMI data
+
+REST API integration between React frontend and Express backend
+
+Tech Stack
+
+Frontend
+
+React 19
+
+Vite 8
+
+Tailwind CSS 4
+
+React Router 7
+
+Backend
+
+Node.js
+
+Express 5
+
+CORS
+
+Database
+
+MongoDB
+
+Mongoose 9
+
+Other
+
+dotenv
+
+REST APIs
+
+Git/GitHub
+
+Project Structure
+
+1Fi-intern-assesement/
+├── client/
+│   ├── public/
+│   │   └── images/
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── App.jsx
+│       └── main.jsx
+│   └── vite.config.js
 │
-├── server/                     # Express backend
+├── server/
 │   ├── models/
-│   │   └── Product.js          # Mongoose schema
+│   │   └── Product.js
 │   ├── routes/
-│   │   └── products.js         # Product API routes
-│   ├── index.js                # Server entry point
-│   ├── seed.js                 # Database seed script
-│   └── .env.example            # Environment variable template
+│   │   └── products.js
+│   ├── index.js
+│   ├── seed.js
+│   └── .env.example
 │
-└── .gitignore
-```
+└── README.md
 
-## Database Schema
+Database Schema
 
-The application uses a single `products` collection with embedded documents:
-
-```
 Product
-├── name          (String, required)
-├── slug          (String, required, unique)
-├── brand         (String, required)
-├── description   (String, required)
-├── images        (Array of Strings)
+├── name
+├── slug
+├── brand
+├── images[]
 ├── colors[]
-│   ├── name      (String) — e.g. "Desert Titanium"
-│   └── hex       (String) — e.g. "#BFA98D"
-└── variants[]    — one entry per storage option
-    ├── storage   (String) — e.g. "128 GB"
-    ├── mrp       (Number) — maximum retail price
-    ├── price     (Number) — selling price
+│   ├── name
+│   ├── hex
+│   └── image
+└── variants[]
+    ├── storage
+    ├── mrp
+    ├── price
     └── emiPlans[]
-        ├── tenure    (Number) — months
-        ├── monthly   (Number) — monthly payment amount
-        ├── interest  (Number) — annual interest rate
-        └── cashback  (String or null)
-```
+        ├── tenure
+        ├── monthly
+        ├── interest
+        ├── cashback
+        └── mutualFund
+            ├── name
+            └── type
 
-Each product has multiple storage variants, and each variant has its own price and EMI plans. Colors are stored separately since they don't affect pricing.
+Each EMI plan contains mutual-fund backing information. The seed data currently uses funds such as HDFC Liquid Fund, SBI Magnum Gilt Fund, ICICI Prudential Liquid Fund, and Axis Liquid Fund.
 
-## Seed Data
+Seed Data
 
-The seed script (`server/seed.js`) populates the database with 3 products:
+The database seed currently contains:
 
-| Product | Variants | EMI Plans |
-|---------|----------|-----------|
-| iPhone 16 Pro | 128 GB, 256 GB, 512 GB | 4 per variant |
-| Samsung Galaxy S24 Ultra | 256 GB, 512 GB | 4 per variant |
-| Google Pixel 9 Pro | 128 GB, 256 GB | 4 per variant |
+Product
 
-The seed uses **upsert by slug** — running it multiple times safely updates existing products without deleting unrelated records.
+Example storage variants
 
-```bash
-cd server
-npm run seed
-```
+iPhone 17 Pro
 
-## API Endpoints
+128GB, 256GB, 512GB
 
-### `GET /api/products`
+Samsung Galaxy S25 Ultra
 
-Returns all products with summary data for the listing page. EMI plan arrays are excluded from variants; a computed `lowestEmi` field is included instead.
+256GB, 512GB
 
-**Example response:**
+Google Pixel 9 Pro
 
-```json
+128GB, 256GB
+
+OnePlus 12
+
+128GB, 256GB
+
+Samsung Galaxy Z Fold 7
+
+256GB, 512GB
+
+iPhone 15 Pro Max
+
+256GB, 512GB
+
+The seed script upserts products by slug, so running the seed command updates existing seeded products instead of creating duplicate records.
+
+API Documentation
+
+Get all products
+
+GET /api/products
+
+Returns product information, images, colors, variants, pricing, and lowest EMI information.
+
+Example:
+
 [
   {
-    "_id": "...",
-    "name": "iPhone 16 Pro",
-    "slug": "iphone-16-pro",
+    "name": "iPhone 17 Pro",
+    "slug": "iphone-17-pro",
     "brand": "Apple",
-    "images": ["/images/iphone-16-pro.jpg"],
+    "images": ["/images/iphone-17-pro.jpg"],
     "colors": [
-      { "name": "Desert Titanium", "hex": "#BFA98D" }
+      {
+        "name": "Natural Titanium",
+        "hex": "#8E8D8A",
+        "image": "/images/iphone-17-pro-natural-titanium.jpg"
+      }
     ],
     "variants": [
-      { "storage": "128 GB", "mrp": 134900, "price": 127900 },
-      { "storage": "256 GB", "mrp": 144900, "price": 137900 }
+      {
+        "storage": "128GB",
+        "mrp": 134900,
+        "price": 124900
+      }
     ],
-    "lowestEmi": 6450
+    "lowestEmi": 5199
   }
 ]
-```
 
-### `GET /api/products/:slug`
+Get a product by slug
 
-Returns a single product with full details including description and EMI plans for each variant.
+GET /api/products/:slug
 
-**Example:** `GET /api/products/google-pixel-9-pro`
+Example:
 
-```json
+GET /api/products/iphone-17-pro
+
+Returns the complete product including variants and EMI plans.
+
+Example:
+
 {
-  "_id": "...",
-  "name": "Google Pixel 9 Pro",
-  "slug": "google-pixel-9-pro",
-  "brand": "Google",
-  "description": "Google Pixel 9 Pro with Tensor G4 chip...",
-  "images": ["/images/google-pixel-9-pro.jpg"],
+  "name": "iPhone 17 Pro",
+  "slug": "iphone-17-pro",
+  "brand": "Apple",
+  "images": ["/images/iphone-17-pro.jpg"],
   "colors": [
-    { "name": "Obsidian", "hex": "#3B3B3B" },
-    { "name": "Porcelain", "hex": "#F5F0E8" },
-    { "name": "Hazel", "hex": "#A8B5A0" }
+    {
+      "name": "Natural Titanium",
+      "hex": "#8E8D8A",
+      "image": "/images/iphone-17-pro-natural-titanium.jpg"
+    }
   ],
   "variants": [
     {
-      "storage": "128 GB",
-      "mrp": 109999,
-      "price": 101999,
+      "storage": "128GB",
+      "mrp": 134900,
+      "price": 124900,
       "emiPlans": [
-        { "tenure": 3, "monthly": 34000, "interest": 0, "cashback": null },
-        { "tenure": 6, "monthly": 17833, "interest": 5, "cashback": "₹500 cashback" },
-        { "tenure": 12, "monthly": 9350, "interest": 10, "cashback": "₹1,000 cashback" }
+        {
+          "tenure": 12,
+          "monthly": 10999,
+          "interest": 0,
+          "cashback": "₹2,000",
+          "mutualFund": {
+            "name": "HDFC Liquid Fund",
+            "type": "Debt"
+          }
+        }
       ]
     }
   ]
 }
-```
 
-**Error responses:**
+Error Responses
 
-| Status | Condition | Response |
-|--------|-----------|----------|
-| 404 | Product not found | `{ "error": "Product not found" }` |
-| 400 | Invalid slug format | `{ "error": "Invalid product slug" }` |
+404 Not Found
 
-## Setup & Installation
+Returned when the requested product does not exist.
 
-### Prerequisites
+400 Bad Request
 
-- Node.js (v18+)
-- MongoDB (local or Atlas)
+Returned for invalid requests where applicable.
 
-### 1. Clone the repository
+Frontend-Backend Integration
 
-```bash
+Product information is loaded from the backend API rather than being hardcoded in the frontend.
+
+The frontend requests:
+
+GET /api/products
+GET /api/products/:slug
+
+Product images, colors, variants, prices, EMI plans, and mutual-fund information are supplied by the API/database.
+
+Local Setup
+
+Requirements
+
+Node.js 18+
+
+MongoDB
+
+npm
+
+Clone and install
+
 git clone https://github.com/Rhythem2005/ASSESEMENT-INTERN.git
 cd ASSESEMENT-INTERN
-```
 
-### 2. Install dependencies
+cd client
+npm install
 
-```bash
-cd client && npm install
-cd ../server && npm install
-```
+cd ../server
+npm install
 
-### 3. Configure environment variables
+Configure environment variables
 
-```bash
-cd server
-cp .env.example .env
-```
+Create a .env file inside server based on .env.example.
 
-Edit `server/.env` and set your MongoDB connection string:
+MONGODB_URI=your_mongodb_connection_string
+PORT=5001
 
-```
-MONGODB_URI=mongodb://localhost:27017/1Fi-intern-assesement
-```
+Seed the database
 
-### 4. Seed the database
+From server:
 
-```bash
-cd server
 npm run seed
-```
 
-### 5. Start the backend
+Start the backend
 
-```bash
-cd server
 npm run dev
-```
 
-### 6. Start the frontend
+Backend:
 
-```bash
+http://localhost:5001
+
+Start the frontend
+
+In another terminal:
+
 cd client
 npm run dev
-```
 
-## Environment Variables
+Frontend:
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/1Fi-intern-assesement` |
+http://localhost:5173
 
-The `.env` file is gitignored. Use `.env.example` as a template.
+The Vite development server proxies /api requests to the backend.
 
-## Running the Application
+Application Flow
 
-| Service | URL | Port |
-|---------|-----|------|
-| Frontend (Vite) | http://localhost:5173 | 5173 |
-| Backend (Express) | http://localhost:5001 | 5001 |
+Open the home page.
 
-The Vite dev server proxies `/api` requests to the backend automatically.
+Browse available products.
 
-## Frontend–Backend Integration
+Select a product.
 
-All product and EMI data displayed in the UI is fetched from the Express API at runtime:
+Open its unique product URL.
 
-- **Home page** → `GET /api/products` → product listing
-- **Product detail page** → `GET /api/products/:slug` → full product with variants and EMI plans
+Select the required color and storage variant.
 
-No product data is hardcoded in the frontend. The `client/src/data/` directory with mock data has been removed.
+Review the available EMI plans.
 
-## Assignment Deliverables
+Select one EMI plan.
 
-| Requirement | Status |
-|-------------|--------|
-| Database-backed dynamic product data | ✅ MongoDB with Mongoose |
-| At least 3 products | ✅ iPhone 16 Pro, Samsung Galaxy S24 Ultra, Google Pixel 9 Pro |
-| At least 2 variants per product | ✅ 2–3 storage variants each |
-| EMI plans with monthly, tenure, interest, cashback | ✅ 4 plans per variant |
-| Dynamic product URLs (`/products/:slug`) | ✅ React Router |
-| Backend REST API | ✅ Express with GET endpoints |
-| Responsive UI | ✅ Tailwind CSS with sm/md/lg breakpoints |
-| Seed script | ✅ Safe upsert-based seeding |
-| Environment variables for secrets | ✅ dotenv with .env.example |
+Review the selected plan in the confirmation modal.
+
+Confirm the selection.
+
+Assessment Requirements Covered
+
+Dynamic product listing
+
+Unique product detail URLs
+
+At least 3 products and at least 2 variants per product
+
+Product name, variant, MRP, selling price, and image
+
+Multiple selectable EMI plans
+
+Monthly payment, tenure, interest rate, and cashback information
+
+EMI plans represented with mutual-fund backing information
+
+Proceed flow for the selected EMI plan
+
+Backend API integration
+
+MongoDB database and seed script
+
+Responsive frontend
+
+Loading and error handling
+
+Notes
+
+The project implements the EMI-plan and mutual-fund backing representation required for the assessment. It does not implement real financial transactions, mutual-fund investments, KYC, payment processing, or live NAV calculations.
+
+License
+
+This project was created for an internship assessment.
