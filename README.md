@@ -11,6 +11,10 @@ A full-stack product browsing and EMI selection web application built for the in
 
 **🔗 Live Demo:** [1-fi-intern-assessment.vercel.app](https://1-fi-intern-assessment.vercel.app/)
 
+**🔗 Backend API:** [assesement-intern.onrender.com](https://assesement-intern.onrender.com)
+
+**📡 Products API:** [GET /api/products](https://1-fi-intern-assessment.vercel.app/api/products)
+
 ---
 
 ## ✨ Features
@@ -235,8 +239,8 @@ Images, colors, variants, prices, EMI plans, and mutual-fund info are all suppli
 ### Clone and install
 
 ```bash
-git clone https://github.com/Rhythem2005/ASSESEMENT-INTERN.git
-cd ASSESEMENT-INTERN
+git clone https://github.com/Rhythem2005/1Fi-Intern-Assessment.git
+cd 1Fi-Intern-Assessment
 
 cd client
 npm install
