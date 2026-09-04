@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 
 
@@ -13,6 +13,8 @@ export default function ProductDetail() {
   const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showEmiModal, setShowEmiModal] = useState(false);
+  const [expandedGroup, setExpandedGroup] = useState(null);
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -26,6 +28,7 @@ export default function ProductDetail() {
       })
       .then((data) => {
         setProduct(data);
+        // Reset selections when loading a different product
         setSelectedColor(data.colors[0]?.name || null);
         setSelectedVariantIdx(0);
         setSelectedPlan(null);
@@ -43,6 +46,26 @@ export default function ProductDetail() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [showModal]);
+  const currentVariant = product?.variants?.[selectedVariantIdx];
+
+  // Group plans by fund so each section can be expanded independently.
+  // Preserves original emiPlans index so selectedPlan maps back to the variant.
+  const groupedPlans = useMemo(() => {
+    if (!currentVariant || !currentVariant.emiPlans) return {};
+    const groups = {};
+    currentVariant.emiPlans.forEach((plan, idx) => {
+      const fundName = plan.mutualFund?.name || "Other";
+      if (!groups[fundName]) {
+        groups[fundName] = {
+          type: plan.mutualFund?.type || "",
+          plans: []
+        };
+      }
+      groups[fundName].plans.push({ plan, idx });
+    });
+    return groups;
+  }, [currentVariant]);
+
 
   if (loading) {
     return (
@@ -81,13 +104,31 @@ export default function ProductDetail() {
     );
   }
 
-  const productColors = product ? product.colors : [];
-  const currentImage = productColors.find(c => c.name === selectedColor)?.image || (product ? product.images[0] : "");
+  if (!product) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Product Not Found</h1>
+        <p className="text-gray-600 mb-8 max-w-md mx-auto">
+          We couldn't find the product you're looking for. It might have been removed or the URL is incorrect.
+        </p>
+        <Link
+          to="/"
+          className="inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+        >
+          Return to Shop
+        </Link>
+      </div>
+    );
+  }
+
+  const productColors = product.colors || [];
+  const currentImage = productColors.find(c => c.name === selectedColor)?.image || product.images[0];
 
   const variant = product.variants[selectedVariantIdx];
   const discount = Math.round(
     ((variant.mrp - variant.price) / variant.mrp) * 100
   );
+
 
   function handleProceed() {
     if (selectedPlan == null) return;
@@ -182,11 +223,10 @@ export default function ProductDetail() {
                   key={color.name}
                   onClick={() => setSelectedColor(color.name)}
                   title={color.name}
-                  className={`w-12 h-12 rounded-full cursor-pointer transition-all flex items-center justify-center ${
-                    selectedColor === color.name
+                  className={`w-12 h-12 rounded-full cursor-pointer transition-all flex items-center justify-center ${selectedColor === color.name
                       ? "ring-2 ring-offset-4 ring-blue-600 scale-110"
                       : "ring-1 ring-gray-300 ring-offset-2 hover:scale-105"
-                  }`}
+                    }`}
                   style={{ backgroundColor: color.hex }}
                 >
                   {selectedColor === color.name && (
@@ -222,13 +262,13 @@ export default function ProductDetail() {
                   key={v.storage}
                   onClick={() => {
                     setSelectedVariantIdx(i);
+                    // Reset selected plan since prices and EMI terms differ across variants
                     setSelectedPlan(null);
                   }}
-                  className={`flex-1 sm:flex-none px-6 py-3 text-sm rounded-xl border-2 transition-all cursor-pointer font-bold ${
-                    i === selectedVariantIdx
+                  className={`flex-1 sm:flex-none px-6 py-3 text-sm rounded-xl border-2 transition-all cursor-pointer font-bold ${i === selectedVariantIdx
                       ? "border-blue-600 text-blue-700 bg-blue-50/50 shadow-sm"
                       : "border-gray-200 text-gray-700 bg-white hover:border-gray-300 hover:bg-gray-50"
-                  }`}
+                    }`}
                 >
                   {v.storage}
                 </button>
@@ -236,77 +276,30 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* EMI Plans */}
+          {/* EMI Plans Trigger */}
           <div className="py-8 mb-20 sm:mb-0">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-extrabold text-gray-900">
-                Select EMI Plan
+                EMI Options
               </h3>
               <span className="text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
                 Required
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {variant.emiPlans.map((plan, idx) => {
-                const selected = selectedPlan === idx;
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => setSelectedPlan(idx)}
-                    className={`w-full text-left p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between min-h-[140px] relative overflow-hidden ${
-                      selected
-                        ? "border-blue-600 bg-blue-50/40 shadow-md ring-1 ring-blue-600"
-                        : "border-gray-200 bg-white hover:border-blue-400 hover:shadow-sm"
-                    }`}
-                  >
-                    {selected && (
-                      <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">
-                        SELECTED
-                      </div>
-                    )}
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <span className="block text-2xl font-black text-gray-900 tracking-tight">
-                          ₹{plan.monthly.toLocaleString("en-IN")}
-                        </span>
-                        <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mt-0.5">
-                          / month
-                        </span>
-                      </div>
-                      <div className="bg-gray-100 text-gray-800 text-xs font-bold px-2.5 py-1 rounded-md border border-gray-200">
-                        {plan.tenure} mos
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5 mt-auto">
-                      <div className="flex items-center text-sm">
-                        <span
-                          className={
-                            plan.interest === 0
-                              ? "font-bold text-green-600"
-                              : "font-semibold text-gray-600"
-                          }
-                        >
-                          {plan.interest === 0
-                            ? "No Cost EMI"
-                            : `${plan.interest}% p.a. interest`}
-                        </span>
-                      </div>
-                      {plan.cashback && (
-                        <div className="flex items-center text-sm font-bold text-amber-600">
-                          {plan.cashback}
-                        </div>
-                      )}
-                      {plan.mutualFund && (
-                        <div className="flex items-center text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-1 rounded border border-blue-100 mt-2">
-                          Backed by {plan.mutualFund.name} ({plan.mutualFund.type})
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+            <button
+              onClick={() => setShowEmiModal(true)}
+              className="w-full text-left p-5 rounded-2xl border-2 border-gray-200 flex justify-between items-center hover:border-blue-500 hover:shadow-sm transition-all bg-white cursor-pointer"
+            >
+              <div>
+                <span className="block font-bold text-gray-900 text-lg">
+                  {selectedPlan != null ? `Selected: ₹${variant.emiPlans[selectedPlan].monthly.toLocaleString('en-IN')}/mo for ${variant.emiPlans[selectedPlan].tenure} mos` : "View and Select EMI Plans"}
+                </span>
+                <span className="block text-sm text-gray-500 mt-1">
+                  Multiple plans available backed by Mutual Funds
+                </span>
+              </div>
+              <span className="text-blue-600 font-bold ml-4">Change &gt;</span>
+            </button>
           </div>
 
           {/* Proceed CTA (Sticky on Mobile, Static on Desktop) */}
@@ -314,11 +307,10 @@ export default function ProductDetail() {
             <button
               onClick={handleProceed}
               disabled={selectedPlan == null}
-              className={`w-full py-4 px-8 rounded-xl text-lg font-bold transition-all ${
-                selectedPlan != null
+              className={`w-full py-4 px-8 rounded-xl text-lg font-bold transition-all ${selectedPlan != null
                   ? "bg-amber-400 hover:bg-amber-500 text-gray-900 shadow-sm cursor-pointer hover:shadow-md transform hover:-translate-y-0.5"
                   : "bg-gray-100 text-gray-400 cursor-not-allowed"
-              }`}
+                }`}
             >
               {selectedPlan != null
                 ? "Proceed with Selected Plan"
@@ -333,10 +325,113 @@ export default function ProductDetail() {
         </div>
       </div>
 
+      {/* EMI Selection Modal */}
+      {showEmiModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm px-4 py-6"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowEmiModal(false);
+          }}
+        >
+          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden outline-none flex flex-col max-h-full animate-in fade-in zoom-in-95 duration-200">
+            <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 flex-shrink-0">
+              <h2 className="text-lg font-bold text-gray-900">
+                EMI Options
+              </h2>
+              <button
+                onClick={() => setShowEmiModal(false)}
+                className="text-gray-400 hover:text-gray-700 hover:bg-gray-200 cursor-pointer p-1.5 rounded-full transition-colors"
+                aria-label="Close"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-gray-50/30">
+              {Object.entries(groupedPlans).map(([fundName, group]) => (
+                <div key={fundName} className="mb-4 border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-white">
+                  <button
+                    onClick={() => setExpandedGroup(expandedGroup === fundName ? null : fundName)}
+                    className="w-full px-5 py-4 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors cursor-pointer"
+                  >
+                    <div className="text-left">
+                      <h4 className="font-bold text-gray-900">{fundName}</h4>
+                      {group.type && <span className="text-xs font-semibold text-gray-500 mt-0.5 block">{group.type} Fund</span>}
+                    </div>
+                    <svg
+                      className={`w-5 h-5 text-gray-500 transform transition-transform duration-200 ${expandedGroup === fundName ? 'rotate-180' : ''}`}
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {expandedGroup === fundName && (
+                    <div className="p-4 sm:p-5 border-t border-gray-100 bg-gray-50/50 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {group.plans.map(({ plan, idx }) => {
+                        const selected = selectedPlan === idx;
+                        return (
+                          <button
+                            key={idx}
+                            onClick={() => {
+                              setSelectedPlan(idx);
+                              setShowEmiModal(false);
+                            }}
+                            className={`w-full text-left p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between relative ${selected
+                                ? "border-blue-600 bg-blue-50/60 shadow-sm ring-1 ring-blue-600"
+                                : "border-gray-200 bg-white hover:border-blue-400 hover:shadow-sm"
+                              }`}
+                          >
+                            {selected && (
+                              <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">
+                                SELECTED
+                              </div>
+                            )}
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <span className="block text-xl font-black text-gray-900 tracking-tight">
+                                  ₹{plan.monthly.toLocaleString("en-IN")}
+                                </span>
+                                <span className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mt-0.5">
+                                  / month
+                                </span>
+                              </div>
+                              <div className="bg-gray-100 text-gray-800 text-[11px] font-bold px-2 py-1 rounded-md border border-gray-200">
+                                {plan.tenure} mos
+                              </div>
+                            </div>
+                            <div className="space-y-1.5 mt-2">
+                              <div className="text-sm">
+                                <span className={plan.interest === 0 ? "font-bold text-green-600" : "font-semibold text-gray-600"}>
+                                  {plan.interest === 0 ? "No Cost EMI" : `${plan.interest}% p.a. interest`}
+                                </span>
+                              </div>
+                              {plan.cashback && (
+                                <div className="text-sm font-bold text-amber-600">
+                                  {plan.cashback}
+                                </div>
+                              )}
+                              <div className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-1 rounded border border-blue-100 inline-block mt-1">
+                                Backed by {fundName}
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Confirmation Modal */}
       {showModal &&
         selectedPlan != null &&
         (() => {
+          // Scoped IIFE avoids repeating variant.emiPlans[selectedPlan] lookups
           const plan = variant.emiPlans[selectedPlan];
           return (
             <div
@@ -418,9 +513,8 @@ export default function ProductDetail() {
                         Interest Rate
                       </span>
                       <span
-                        className={`font-bold ${
-                          plan.interest === 0 ? "text-green-600" : "text-gray-900"
-                        }`}
+                        className={`font-bold ${plan.interest === 0 ? "text-green-600" : "text-gray-900"
+                          }`}
                       >
                         {plan.interest === 0
                           ? "No Cost EMI"

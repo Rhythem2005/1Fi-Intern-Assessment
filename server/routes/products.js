@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
       "variants.emiPlans.monthly": 1,
     }).lean();
 
-    // Compute lowestEmi and strip emiPlans from the response
+    // Compute lowest starting EMI for listing cards and drop full plan arrays to keep payload light
     const result = products.map((p) => {
       const lowestEmi = Math.min(
         ...p.variants.flatMap((v) => v.emiPlans.map((e) => e.monthly))
@@ -39,6 +39,7 @@ router.get("/:slug", async (req, res) => {
   try {
     const { slug } = req.params;
 
+    // Reject malformed slugs before querying the database
     if (!/^[a-z0-9-]+$/.test(slug)) {
       return res.status(400).json({ error: "Invalid product slug" });
     }
