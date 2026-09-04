@@ -9,15 +9,15 @@
 
 A full-stack product browsing and EMI selection web application built for the internship assessment. Users browse products, pick storage/color variants, view pricing and EMI plans, and confirm a selected plan.
 
-**🔗 Live Demo:** [1-fi-intern-assessment.vercel.app](https://1-fi-intern-assessment.vercel.app/)
+** Live Demo:** [1-fi-intern-assessment.vercel.app](https://1-fi-intern-assessment.vercel.app/)
 
-**🔗 Backend API:** [assesement-intern.onrender.com](https://assesement-intern.onrender.com)
+** Backend API:** [assesement-intern.onrender.com](https://assesement-intern.onrender.com)
 
-**📡 Products API:** [GET /api/products](https://1-fi-intern-assessment.vercel.app/api/products)
+** Products API:** [GET /api/products](https://1-fi-intern-assessment.vercel.app/api/products)
 
 ---
 
-## ✨ Features
+##  Features
 
 - Dynamic product listing from the backend API
 - Product detail pages with unique URLs (`/products/:slug`)
@@ -33,21 +33,29 @@ A full-stack product browsing and EMI selection web application built for the in
 
 ---
 
-## 🧱 Tech Stack
+##  Tech Stack
 
 | Layer | Technologies |
 |---|---|
-| **Frontend** | React 19, Vite 8, Tailwind CSS 4, React Router 7 |
-| **Backend** | Node.js, Express 5, CORS |
-| **Database** | MongoDB, Mongoose 9 |
+| **Frontend** | React , Vite 8, Tailwind CSS , React Router  |
+| **Backend** | Node.js, Express , CORS |
+| **Database** | MongoDB, Mongoose  |
 | **Other** | dotenv, REST APIs, Git/GitHub |
 
 ---
 
-## 📂 Project Structure
+##  Deployment
+
+- **Frontend:** Vercel
+- **Backend:** Render
+- **Database:** MongoDB Atlas
+
+The React frontend is deployed on Vercel and communicates with the deployed Express API on Render. The backend connects to MongoDB for product and EMI data.
+
+##  Project Structure
 
 ```
-1Fi-intern-assesement/
+1Fi-Intern-Assessment/
 ├── client/
 │   ├── public/
 │   │   └── images/
@@ -72,7 +80,7 @@ A full-stack product browsing and EMI selection web application built for the in
 
 ---
 
-## 🗄️ Database Schema
+##  Database Schema
 
 ```
 Product
@@ -98,18 +106,18 @@ Product
             └── type
 ```
 
-Each EMI plan carries mutual-fund backing information. Seed data currently uses funds such as HDFC Liquid Fund, SBI Magnum Gilt Fund, ICICI Prudential Liquid Fund, and Axis Liquid Fund.
+Each EMI plan carries mutual-fund backing information.
 
 ---
 
-## 🌱 Seed Data
+##  Seed Data
 
 | Product | Storage Variants |
 |---|---|
 | iPhone 17 Pro | 128GB, 256GB, 512GB |
 | Samsung Galaxy S25 Ultra | 256GB, 512GB |
 | Google Pixel 9 Pro | 128GB, 256GB |
-| OnePlus 12 | 128GB, 256GB |
+| OnePlus 12 | 256GB, 512GB |
 | Samsung Galaxy Z Fold 7 | 256GB, 512GB |
 | iPhone 15 Pro Max | 256GB, 512GB |
 
@@ -117,7 +125,7 @@ Each EMI plan carries mutual-fund backing information. Seed data currently uses 
 
 ---
 
-## 📡 API Documentation
+##  API Documentation
 
 ### Get all products
 
@@ -136,22 +144,27 @@ Returns product info, images, colors, variants, pricing, and lowest EMI.
     "name": "iPhone 17 Pro",
     "slug": "iphone-17-pro",
     "brand": "Apple",
-    "images": ["/images/iphone-17-pro.jpg"],
+    "images": ["/images/Iphone-17-pro-White.png"],
     "colors": [
       {
-        "name": "Natural Titanium",
-        "hex": "#8E8D8A",
-        "image": "/images/iphone-17-pro-natural-titanium.jpg"
+        "name": "Orange",
+        "hex": "#FF7F50",
+        "image": "/images/Iphone-17-pro-Orange.png"
+      },
+      {
+        "name": "White",
+        "hex": "#F5F5F0",
+        "image": "/images/Iphone-17-pro-White.png"
       }
     ],
     "variants": [
       {
-        "storage": "128GB",
+        "storage": "128 GB",
         "mrp": 134900,
-        "price": 124900
+        "price": 127900
       }
     ],
-    "lowestEmi": 5199
+    "lowestEmi": 11244
   }
 ]
 ```
@@ -176,31 +189,25 @@ Returns the complete product including variants and EMI plans.
   "name": "iPhone 17 Pro",
   "slug": "iphone-17-pro",
   "brand": "Apple",
-  "images": ["/images/iphone-17-pro.jpg"],
+  "images": ["/images/Iphone-17-pro-White.png"],
   "colors": [
     {
-      "name": "Natural Titanium",
-      "hex": "#8E8D8A",
-      "image": "/images/iphone-17-pro-natural-titanium.jpg"
+      "name": "Orange",
+      "hex": "#FF7F50",
+      "image": "/images/Iphone-17-pro-Orange.png"
+    },
+    {
+      "name": "White",
+      "hex": "#F5F5F0",
+      "image": "/images/Iphone-17-pro-White.png"
     }
   ],
   "variants": [
     {
-      "storage": "128GB",
+      "storage": "128 GB",
       "mrp": 134900,
-      "price": 124900,
-      "emiPlans": [
-        {
-          "tenure": 12,
-          "monthly": 10999,
-          "interest": 0,
-          "cashback": "₹2,000",
-          "mutualFund": {
-            "name": "HDFC Liquid Fund",
-            "type": "Debt"
-          }
-        }
-      ]
+      "price": 127900,
+      "emiPlans": "[...]"
     }
   ]
 }
@@ -217,7 +224,7 @@ Returns the complete product including variants and EMI plans.
 
 ---
 
-## 🔗 Frontend–Backend Integration
+##  Frontend–Backend Integration
 
 Product information is loaded from the backend API rather than hardcoded in the frontend.
 
@@ -232,7 +239,7 @@ Images, colors, variants, prices, EMI plans, and mutual-fund info are all suppli
 
 ---
 
-## 🚀 Local Setup
+##  Local Setup
 
 **Requirements:** Node.js 18+, MongoDB, npm
 
@@ -289,7 +296,7 @@ Frontend: `http://localhost:5173`
 
 ---
 
-## 🧭 Application Flow
+##  Application Flow
 
 1. Open the home page
 2. Browse available products
@@ -297,12 +304,11 @@ Frontend: `http://localhost:5173`
 4. Select the required color and storage variant
 5. Review the available EMI plans
 6. Select one EMI plan
-7. Review the selected plan in the confirmation modal
-8. Confirm the selection
-
+7. Click Proceed
+8. Review the selected plan in the confirmation modal
 ---
 
-## ✅ Assessment Requirements Covered
+##  Assessment Requirements Covered
 
 - [x] Dynamic product listing
 - [x] Unique product detail URLs
@@ -319,13 +325,9 @@ Frontend: `http://localhost:5173`
 
 ---
 
-## 📝 Notes
-
 This project implements the EMI-plan and mutual-fund backing representation required for the assessment. It does **not** implement real financial transactions, mutual-fund investments, KYC, payment processing, or live NAV calculations.
 
 ---
-
-## 📄 License
 
 This project was created for an internship assessment.
 
