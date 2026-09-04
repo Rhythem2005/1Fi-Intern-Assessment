@@ -1,4 +1,4 @@
-# EasyEMI — Product EMI Web Application
+# 1Fi-intern-assesement — Product EMI Web Application
 
 A full-stack web application where users can browse products, select variants (storage/color), view available EMI plans, and proceed with a selected plan. All product and EMI data is stored in MongoDB and served through a REST API.
 
@@ -195,7 +195,7 @@ cp .env.example .env
 Edit `server/.env` and set your MongoDB connection string:
 
 ```
-MONGODB_URI=mongodb://localhost:27017/easyemi
+MONGODB_URI=mongodb://localhost:27017/1Fi-intern-assesement
 ```
 
 ### 4. Seed the database
@@ -223,7 +223,7 @@ npm run dev
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/easyemi` |
+| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/1Fi-intern-assesement` |
 
 The `.env` file is gitignored. Use `.env.example` as a template.
 

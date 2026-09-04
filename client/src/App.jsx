@@ -13,7 +13,7 @@ function App() {
                 E
               </div>
               <span className="text-[17px] font-semibold tracking-tight">
-                EasyEMI
+                1Fi-intern-assesement
               </span>
             </Link>
             <nav className="hidden sm:flex items-center gap-8 text-[14px] font-medium text-[#5B6270]">

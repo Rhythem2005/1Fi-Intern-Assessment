@@ -1,11 +1,20 @@
 import mongoose from "mongoose";
 
+const mutualFundSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    type: { type: String, required: true },
+  },
+  { _id: false }
+);
+
 const emiPlanSchema = new mongoose.Schema(
   {
     tenure: { type: Number, required: true, min: 1 },
     monthly: { type: Number, required: true, min: 0 },
     interest: { type: Number, required: true, min: 0 },
     cashback: { type: String, default: null },
+    mutualFund: { type: mutualFundSchema, required: true },
   },
   { _id: false }
 );
@@ -24,6 +33,7 @@ const colorSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     hex: { type: String, required: true },
+    image: { type: String, required: true },
   },
   { _id: false }
 );

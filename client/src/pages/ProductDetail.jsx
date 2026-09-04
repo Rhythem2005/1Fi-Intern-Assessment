@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 
+
+
 export default function ProductDetail() {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
@@ -44,24 +46,27 @@ export default function ProductDetail() {
 
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 py-24 text-center text-[#5B6270] text-sm">
-        Loading product...
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 flex justify-center">
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+          <p className="text-gray-500 font-medium">Loading product details...</p>
+        </div>
       </div>
     );
   }
 
   if (error === "not_found") {
     return (
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 py-24 text-center">
-        <h1 className="text-xl font-semibold mb-2">Product not found</h1>
-        <p className="text-[#5B6270] text-sm mb-6">
-          We couldn't find the product you're looking for.
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Product Not Found</h1>
+        <p className="text-gray-600 mb-8 max-w-md mx-auto">
+          We couldn't find the product you're looking for. It might have been removed or the URL is incorrect.
         </p>
         <Link
           to="/"
-          className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-md text-white bg-[#2B3A67] hover:bg-[#22305A] transition-colors"
+          className="inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors"
         >
-          Browse all products
+          Return to Shop
         </Link>
       </div>
     );
@@ -69,12 +74,15 @@ export default function ProductDetail() {
 
   if (error) {
     return (
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 py-24 text-center">
-        <h2 className="text-lg font-semibold mb-2">Something went wrong</h2>
-        <p className="text-[#5B6270] text-sm">{error}</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
+        <p className="text-gray-600">{error}</p>
       </div>
     );
   }
+
+  const productColors = product ? product.colors : [];
+  const currentImage = productColors.find(c => c.name === selectedColor)?.image || (product ? product.images[0] : "");
 
   const variant = product.variants[selectedVariantIdx];
   const discount = Math.round(
@@ -87,14 +95,14 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-5 sm:px-8 py-8 md:py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 bg-white min-h-screen">
       <Link
         to="/"
-        className="inline-flex items-center text-[13px] font-medium text-[#5B6270] hover:text-[#14181F] transition-colors mb-6 md:mb-8"
+        className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors mb-8 group"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-3.5 w-3.5 mr-1.5"
+          className="h-4 w-4 mr-1.5 transition-transform group-hover:-translate-x-1"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -106,74 +114,84 @@ export default function ProductDetail() {
             d="M10 19l-7-7m0 0l7-7m-7 7h18"
           />
         </svg>
-        Back to products
+        Back to all products
       </Link>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20">
-        {/* Image */}
-        <div className="bg-[#F3F2EE] rounded-lg flex items-center justify-center p-10 sm:p-14 aspect-square md:sticky md:top-24 md:self-start">
-          <img
-            src={product.images[0]}
-            alt={product.name}
-            className="max-h-full max-w-full object-contain mix-blend-multiply"
-          />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        {/* Left Column: Product Image */}
+        <div className="lg:col-span-5 relative">
+          <div className="sticky top-6 rounded-2xl bg-gray-50 border border-gray-100 p-8 sm:p-12 flex items-center justify-center min-h-[350px] sm:min-h-[500px]">
+            <img
+              src={currentImage}
+              alt={product.name}
+              className="max-h-full max-w-full object-contain mix-blend-multiply drop-shadow-sm"
+            />
+          </div>
         </div>
 
-        {/* Details */}
-        <div>
-          <p className="text-[12px] text-[#8A8F99] font-medium mb-1.5">
-            {product.brand}
-          </p>
-          <h1 className="text-[26px] sm:text-[28px] font-semibold tracking-tight leading-tight">
-            {product.name}
-          </h1>
+        {/* Right Column: Product Details */}
+        <div className="lg:col-span-7 flex flex-col">
+          {/* Header & Description */}
+          <div className="mb-6">
+            <h2 className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-2">
+              {product.brand}
+            </h2>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
+              {product.name}
+            </h1>
+            <p className="text-gray-600 text-base leading-relaxed">
+              {product.description}
+            </p>
+          </div>
 
           {/* Pricing */}
-          <div className="mt-6 py-5 border-y border-[#E4E2DC]">
-            <div className="flex items-baseline gap-3 flex-wrap">
-              <span className="text-[32px] sm:text-[34px] font-semibold tracking-tight">
+          <div className="py-6 border-y border-gray-200">
+            <div className="flex items-end gap-3 flex-wrap">
+              <span className="text-4xl font-black text-gray-900 tracking-tight">
                 ₹{variant.price.toLocaleString("en-IN")}
               </span>
               {variant.mrp > variant.price && (
-                <>
-                  <span className="text-[15px] text-[#8A8F99] line-through">
-                    ₹{variant.mrp.toLocaleString("en-IN")}
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-lg text-gray-500 line-through font-medium">
+                    MRP: ₹{variant.mrp.toLocaleString("en-IN")}
                   </span>
-                  <span className="text-[13px] font-semibold text-[#1B7A43]">
-                    {discount}% off
+                  <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">
+                    {discount}% OFF
                   </span>
-                </>
+                </div>
               )}
             </div>
-            <p className="text-[13px] text-[#8A8F99] mt-1.5">
+            <p className="text-sm font-medium text-gray-500 mt-2">
               Inclusive of all taxes
             </p>
           </div>
 
-          {/* Color selector */}
-          <div className="mt-7">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-[13px] font-semibold">Color</p>
-              <span className="text-[13px] text-[#5B6270]">
+          {/* Color Selection */}
+          <div className="py-6 border-b border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">
+                Color
+              </h3>
+              <span className="text-sm font-semibold text-gray-700">
                 {selectedColor}
               </span>
             </div>
-            <div className="flex gap-3 flex-wrap">
-              {product.colors.map((color) => (
+            <div className="flex gap-4 flex-wrap">
+              {productColors.map((color) => (
                 <button
                   key={color.name}
                   onClick={() => setSelectedColor(color.name)}
                   title={color.name}
-                  className={`w-10 h-10 rounded-full cursor-pointer transition-shadow flex items-center justify-center ${
+                  className={`w-12 h-12 rounded-full cursor-pointer transition-all flex items-center justify-center ${
                     selectedColor === color.name
-                      ? "ring-2 ring-offset-2 ring-[#14181F]"
-                      : "ring-1 ring-[#E4E2DC] ring-offset-2"
+                      ? "ring-2 ring-offset-4 ring-blue-600 scale-110"
+                      : "ring-1 ring-gray-300 ring-offset-2 hover:scale-105"
                   }`}
                   style={{ backgroundColor: color.hex }}
                 >
                   {selectedColor === color.name && (
                     <svg
-                      className="w-4 h-4 text-white mix-blend-difference"
+                      className="w-5 h-5 text-white mix-blend-difference opacity-90"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -191,15 +209,14 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* Storage selector */}
-          <div className="mt-7">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-[13px] font-semibold">Storage</p>
-              <span className="text-[13px] text-[#5B6270]">
-                {variant.storage}
-              </span>
+          {/* Storage Selection */}
+          <div className="py-6 border-b border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">
+                Storage
+              </h3>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            <div className="flex flex-wrap gap-3 sm:gap-4">
               {product.variants.map((v, i) => (
                 <button
                   key={v.storage}
@@ -207,10 +224,10 @@ export default function ProductDetail() {
                     setSelectedVariantIdx(i);
                     setSelectedPlan(null);
                   }}
-                  className={`px-4 py-2.5 text-[14px] rounded-md border transition-colors cursor-pointer font-medium ${
+                  className={`flex-1 sm:flex-none px-6 py-3 text-sm rounded-xl border-2 transition-all cursor-pointer font-bold ${
                     i === selectedVariantIdx
-                      ? "border-[#2B3A67] bg-[#2B3A67] text-white"
-                      : "border-[#E4E2DC] text-[#14181F] bg-white hover:border-[#C7C4BC]"
+                      ? "border-blue-600 text-blue-700 bg-blue-50/50 shadow-sm"
+                      : "border-gray-200 text-gray-700 bg-white hover:border-gray-300 hover:bg-gray-50"
                   }`}
                 >
                   {v.storage}
@@ -220,55 +237,71 @@ export default function ProductDetail() {
           </div>
 
           {/* EMI Plans */}
-          <div className="mt-9">
-            <h3 className="text-[15px] font-semibold mb-3">
-              Select EMI plan
-            </h3>
-            <div className="space-y-2.5">
+          <div className="py-8 mb-20 sm:mb-0">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-extrabold text-gray-900">
+                Select EMI Plan
+              </h3>
+              <span className="text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
+                Required
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {variant.emiPlans.map((plan, idx) => {
                 const selected = selectedPlan === idx;
                 return (
                   <button
                     key={idx}
                     onClick={() => setSelectedPlan(idx)}
-                    className={`w-full text-left pl-4 pr-5 py-4 rounded-md border transition-colors flex items-start gap-3 cursor-pointer ${
+                    className={`w-full text-left p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between min-h-[140px] relative overflow-hidden ${
                       selected
-                        ? "border-[#2B3A67] border-l-[3px] bg-[#F5F6FA]"
-                        : "border-[#E4E2DC] bg-white hover:border-[#C7C4BC]"
+                        ? "border-blue-600 bg-blue-50/40 shadow-md ring-1 ring-blue-600"
+                        : "border-gray-200 bg-white hover:border-blue-400 hover:shadow-sm"
                     }`}
                   >
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline justify-between gap-3">
-                        <p className="text-[19px] font-semibold tracking-tight">
-                          ₹{plan.monthly.toLocaleString("en-IN")}
-                          <span className="text-[13px] font-normal text-[#8A8F99]">
-                            {" "}
-                            /mo
-                          </span>
-                        </p>
-                        <p className="text-[13px] font-medium text-[#5B6270] whitespace-nowrap">
-                          {plan.tenure} months
-                        </p>
+                    {selected && (
+                      <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">
+                        SELECTED
                       </div>
+                    )}
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <span className="block text-2xl font-black text-gray-900 tracking-tight">
+                          ₹{plan.monthly.toLocaleString("en-IN")}
+                        </span>
+                        <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mt-0.5">
+                          / month
+                        </span>
+                      </div>
+                      <div className="bg-gray-100 text-gray-800 text-xs font-bold px-2.5 py-1 rounded-md border border-gray-200">
+                        {plan.tenure} mos
+                      </div>
+                    </div>
 
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5 text-[12px]">
+                    <div className="space-y-1.5 mt-auto">
+                      <div className="flex items-center text-sm">
                         <span
                           className={
                             plan.interest === 0
-                              ? "text-[#1B7A43] font-medium"
-                              : "text-[#5B6270]"
+                              ? "font-bold text-green-600"
+                              : "font-semibold text-gray-600"
                           }
                         >
                           {plan.interest === 0
-                            ? "No cost EMI"
-                            : `${plan.interest}% p.a.`}
+                            ? "No Cost EMI"
+                            : `${plan.interest}% p.a. interest`}
                         </span>
-                        {plan.cashback && (
-                          <span className="text-[#9A6B00] font-medium">
-                            {plan.cashback} cashback
-                          </span>
-                        )}
                       </div>
+                      {plan.cashback && (
+                        <div className="flex items-center text-sm font-bold text-amber-600">
+                          {plan.cashback}
+                        </div>
+                      )}
+                      {plan.mutualFund && (
+                        <div className="flex items-center text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-1 rounded border border-blue-100 mt-2">
+                          Backed by {plan.mutualFund.name} ({plan.mutualFund.type})
+                        </div>
+                      )}
                     </div>
                   </button>
                 );
@@ -276,21 +309,26 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* Proceed */}
-          <div className="mt-8">
+          {/* Proceed CTA (Sticky on Mobile, Static on Desktop) */}
+          <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 sm:relative sm:p-0 sm:bg-transparent sm:border-t-0 sm:mt-6 z-40 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)] sm:shadow-none">
             <button
               onClick={handleProceed}
               disabled={selectedPlan == null}
-              className={`w-full py-3.5 px-6 rounded-md text-[15px] font-semibold transition-colors ${
+              className={`w-full py-4 px-8 rounded-xl text-lg font-bold transition-all ${
                 selectedPlan != null
-                  ? "bg-[#2B3A67] hover:bg-[#22305A] text-white cursor-pointer"
-                  : "bg-[#F0EFEB] text-[#B3AFA5] cursor-not-allowed"
+                  ? "bg-amber-400 hover:bg-amber-500 text-gray-900 shadow-sm cursor-pointer hover:shadow-md transform hover:-translate-y-0.5"
+                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
               }`}
             >
               {selectedPlan != null
-                ? "Proceed with selected plan"
-                : "Select an EMI plan to proceed"}
+                ? "Proceed with Selected Plan"
+                : "Select an EMI Plan to Proceed"}
             </button>
+            {selectedPlan != null && (
+              <p className="text-center text-xs font-bold text-gray-400 mt-4 uppercase tracking-widest hidden sm:block">
+                Secure SSL Transaction
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -302,7 +340,7 @@ export default function ProductDetail() {
           const plan = variant.emiPlans[selectedPlan];
           return (
             <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-[#14181F]/50 px-4"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm px-4"
               onClick={(e) => {
                 if (e.target === e.currentTarget) setShowModal(false);
               }}
@@ -310,17 +348,19 @@ export default function ProductDetail() {
               <div
                 ref={modalRef}
                 tabIndex={-1}
-                className="bg-white w-full max-w-md rounded-lg shadow-lg overflow-hidden outline-none"
+                className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden outline-none animate-in fade-in zoom-in-95 duration-200"
               >
-                <div className="px-6 py-5 border-b border-[#E4E2DC] flex items-center justify-between">
-                  <h2 className="text-[16px] font-semibold">Order summary</h2>
+                <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                  <h2 className="text-lg font-bold text-gray-900">
+                    Order Summary
+                  </h2>
                   <button
                     onClick={() => setShowModal(false)}
-                    className="text-[#8A8F99] hover:text-[#14181F] cursor-pointer p-1 -mr-1 rounded transition-colors"
+                    className="text-gray-400 hover:text-gray-700 hover:bg-gray-200 cursor-pointer p-1.5 rounded-full transition-colors"
                     aria-label="Close"
                   >
                     <svg
-                      className="w-4 h-4"
+                      className="w-5 h-5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -336,69 +376,95 @@ export default function ProductDetail() {
                 </div>
 
                 <div className="px-6 py-6">
-                  <div className="flex items-center gap-4 pb-5 border-b border-[#E4E2DC]">
-                    <div className="w-14 h-14 bg-[#F3F2EE] rounded-md p-2 flex-shrink-0">
+                  {/* Product Snapshot */}
+                  <div className="flex items-center gap-5 pb-6 border-b border-gray-100">
+                    <div className="w-20 h-20 bg-gray-50 rounded-xl p-2 border border-gray-100 flex-shrink-0 flex items-center justify-center">
                       <img
-                        src={product.images[0]}
+                        src={currentImage}
                         alt={product.name}
-                        className="w-full h-full object-contain mix-blend-multiply"
+                        className="max-w-full max-h-full object-contain mix-blend-multiply"
                       />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-semibold text-[14px] leading-snug truncate">
+                      <h3 className="font-extrabold text-base text-gray-900 leading-snug mb-1">
                         {product.name}
                       </h3>
-                      <p className="text-[13px] text-[#8A8F99] mt-0.5">
-                        {variant.storage} · {selectedColor}
+                      <p className="text-sm font-medium text-gray-500">
+                        {variant.storage} • {selectedColor}
                       </p>
                     </div>
                   </div>
 
-                  <div className="pt-5 space-y-2.5 text-[14px]">
-                    <div className="flex justify-between items-baseline">
-                      <span className="text-[#5B6270]">Monthly payment</span>
-                      <span className="font-semibold text-[17px]">
+                  {/* Plan Breakdown */}
+                  <div className="pt-6 space-y-4">
+                    <div className="flex justify-between items-end">
+                      <span className="text-sm font-semibold text-gray-600">
+                        Monthly Payment
+                      </span>
+                      <span className="font-black text-2xl text-gray-900">
                         ₹{plan.monthly.toLocaleString("en-IN")}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#5B6270]">Tenure</span>
-                      <span className="font-medium">{plan.tenure} months</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-gray-600">
+                        Tenure
+                      </span>
+                      <span className="font-bold text-gray-900">
+                        {plan.tenure} months
+                      </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#5B6270]">Interest rate</span>
-                      <span className="font-medium">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-gray-600">
+                        Interest Rate
+                      </span>
+                      <span
+                        className={`font-bold ${
+                          plan.interest === 0 ? "text-green-600" : "text-gray-900"
+                        }`}
+                      >
                         {plan.interest === 0
-                          ? "No cost EMI"
+                          ? "No Cost EMI"
                           : `${plan.interest}% p.a.`}
                       </span>
                     </div>
                     {plan.cashback && (
-                      <div className="flex justify-between pt-2.5 mt-2.5 border-t border-[#E4E2DC]">
-                        <span className="text-[#5B6270]">Cashback</span>
-                        <span className="font-semibold text-[#9A6B00]">
+                      <div className="flex justify-between items-center pt-3 mt-1 border-t border-dashed border-gray-200">
+                        <span className="text-sm font-bold text-gray-600">
+                          Cashback Applied
+                        </span>
+                        <span className="font-extrabold text-amber-600">
                           {plan.cashback}
+                        </span>
+                      </div>
+                    )}
+                    {plan.mutualFund && (
+                      <div className="flex justify-between items-center pt-3 mt-1 border-t border-dashed border-gray-200">
+                        <span className="text-sm font-bold text-gray-600">
+                          Backed By
+                        </span>
+                        <span className="font-bold text-blue-700">
+                          {plan.mutualFund.name}
                         </span>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <div className="px-6 py-5 border-t border-[#E4E2DC] flex gap-3">
+                <div className="px-6 py-5 bg-gray-50 border-t border-gray-100 flex gap-4">
                   <button
                     onClick={() => setShowModal(false)}
-                    className="flex-1 py-2.5 text-[14px] font-medium rounded-md border border-[#E4E2DC] text-[#14181F] hover:bg-[#F3F2EE] transition-colors cursor-pointer"
+                    className="flex-1 py-3 text-sm font-bold rounded-xl border-2 border-gray-200 text-gray-700 hover:bg-gray-100 hover:border-gray-300 transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={() => {
-                      alert("Order placed successfully! (Demo)");
+                      alert("Order Placed Successfully! (Demo)");
                       setShowModal(false);
                     }}
-                    className="flex-1 py-2.5 text-[14px] font-semibold rounded-md bg-[#2B3A67] hover:bg-[#22305A] text-white transition-colors cursor-pointer"
+                    className="flex-1 py-3 text-sm font-bold rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition-all shadow-sm hover:shadow cursor-pointer"
                   >
-                    Confirm & pay
+                    Confirm Order
                   </button>
                 </div>
               </div>
