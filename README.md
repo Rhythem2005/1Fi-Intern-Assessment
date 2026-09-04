@@ -235,8 +235,8 @@ Images, colors, variants, prices, EMI plans, and mutual-fund info are all suppli
 ### Clone and install
 
 ```bash
-git clone https://github.com/Rhythem2005/ASSESEMENT-INTERN.git
-cd ASSESEMENT-INTERN
+git clone https://github.com/Rhythem2005/1Fi-Intern-Assessment.git
+cd 1Fi-Intern-Assessment
 
 cd client
 npm install
