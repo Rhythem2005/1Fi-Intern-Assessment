@@ -1,71 +1,48 @@
-1Fi-intern-assesement — Product EMI Web Application
+# 1Fi Intern Assessment — Product EMI Web Application
 
-A full-stack product browsing and EMI selection web application built for the internship assessment. Users can browse products, select storage and color variants, view pricing and available EMI plans, and proceed with a selected EMI plan.
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Complete-brightgreen?style=for-the-badge" alt="Status"/>
+  <img src="https://img.shields.io/badge/Frontend-React%2019-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React"/>
+  <img src="https://img.shields.io/badge/Backend-Express%205-black?style=for-the-badge&logo=express" alt="Express"/>
+  <img src="https://img.shields.io/badge/Database-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB"/>
+</p>
 
-Features
+A full-stack product browsing and EMI selection web application built for the internship assessment. Users browse products, pick storage/color variants, view pricing and EMI plans, and confirm a selected plan.
 
-Dynamic product listing from the backend API
+**🔗 Live Demo:** [1-fi-intern-assessment.vercel.app](https://1-fi-intern-assessment.vercel.app/)
 
-Product detail pages with unique URLs using /products/:slug
+---
 
-Multiple products with multiple storage and color variants
+## ✨ Features
 
-Dynamic product images served from product/variant data
+- Dynamic product listing from the backend API
+- Product detail pages with unique URLs (`/products/:slug`)
+- Multiple products, each with multiple storage and color variants
+- Dynamic product images served from product/variant data
+- MRP and selling-price display
+- Multiple EMI plans per product variant
+- EMI details: monthly payment, tenure, interest rate, cashback, mutual-fund backing
+- Single EMI plan selection with confirmation modal
+- Responsive UI with loading and error states
+- MongoDB-backed product and EMI data
+- REST API integration between React frontend and Express backend
 
-MRP and selling-price display
+---
 
-Multiple EMI plans for each product variant
+## 🧱 Tech Stack
 
-EMI details including monthly payment, tenure, interest rate, cashback, and mutual-fund backing information
+| Layer | Technologies |
+|---|---|
+| **Frontend** | React 19, Vite 8, Tailwind CSS 4, React Router 7 |
+| **Backend** | Node.js, Express 5, CORS |
+| **Database** | MongoDB, Mongoose 9 |
+| **Other** | dotenv, REST APIs, Git/GitHub |
 
-Single EMI plan selection before proceeding
+---
 
-Selection confirmation modal
+## 📂 Project Structure
 
-Responsive UI
-
-Loading and error states
-
-MongoDB-backed product and EMI data
-
-REST API integration between React frontend and Express backend
-
-Tech Stack
-
-Frontend
-
-React 19
-
-Vite 8
-
-Tailwind CSS 4
-
-React Router 7
-
-Backend
-
-Node.js
-
-Express 5
-
-CORS
-
-Database
-
-MongoDB
-
-Mongoose 9
-
-Other
-
-dotenv
-
-REST APIs
-
-Git/GitHub
-
-Project Structure
-
+```
 1Fi-intern-assesement/
 ├── client/
 │   ├── public/
@@ -87,9 +64,13 @@ Project Structure
 │   └── .env.example
 │
 └── README.md
+```
 
-Database Schema
+---
 
+## 🗄️ Database Schema
+
+```
 Product
 ├── name
 ├── slug
@@ -111,53 +92,41 @@ Product
         └── mutualFund
             ├── name
             └── type
+```
 
-Each EMI plan contains mutual-fund backing information. The seed data currently uses funds such as HDFC Liquid Fund, SBI Magnum Gilt Fund, ICICI Prudential Liquid Fund, and Axis Liquid Fund.
+Each EMI plan carries mutual-fund backing information. Seed data currently uses funds such as HDFC Liquid Fund, SBI Magnum Gilt Fund, ICICI Prudential Liquid Fund, and Axis Liquid Fund.
 
-Seed Data
+---
 
-The database seed currently contains:
+## 🌱 Seed Data
 
-Product
+| Product | Storage Variants |
+|---|---|
+| iPhone 17 Pro | 128GB, 256GB, 512GB |
+| Samsung Galaxy S25 Ultra | 256GB, 512GB |
+| Google Pixel 9 Pro | 128GB, 256GB |
+| OnePlus 12 | 128GB, 256GB |
+| Samsung Galaxy Z Fold 7 | 256GB, 512GB |
+| iPhone 15 Pro Max | 256GB, 512GB |
 
-Example storage variants
+> The seed script **upserts** products by slug — running `npm run seed` again updates existing records instead of creating duplicates.
 
-iPhone 17 Pro
+---
 
-128GB, 256GB, 512GB
+## 📡 API Documentation
 
-Samsung Galaxy S25 Ultra
+### Get all products
 
-256GB, 512GB
-
-Google Pixel 9 Pro
-
-128GB, 256GB
-
-OnePlus 12
-
-128GB, 256GB
-
-Samsung Galaxy Z Fold 7
-
-256GB, 512GB
-
-iPhone 15 Pro Max
-
-256GB, 512GB
-
-The seed script upserts products by slug, so running the seed command updates existing seeded products instead of creating duplicate records.
-
-API Documentation
-
-Get all products
-
+```
 GET /api/products
+```
 
-Returns product information, images, colors, variants, pricing, and lowest EMI information.
+Returns product info, images, colors, variants, pricing, and lowest EMI.
 
-Example:
+<details>
+<summary>Example response</summary>
 
+```json
 [
   {
     "name": "iPhone 17 Pro",
@@ -181,19 +150,24 @@ Example:
     "lowestEmi": 5199
   }
 ]
+```
 
-Get a product by slug
+</details>
 
+### Get a product by slug
+
+```
 GET /api/products/:slug
+```
 
-Example:
-
-GET /api/products/iphone-17-pro
+Example: `GET /api/products/iphone-17-pro`
 
 Returns the complete product including variants and EMI plans.
 
-Example:
+<details>
+<summary>Example response</summary>
 
+```json
 {
   "name": "iPhone 17 Pro",
   "slug": "iphone-17-pro",
@@ -226,40 +200,41 @@ Example:
     }
   ]
 }
+```
 
-Error Responses
+</details>
 
-404 Not Found
+### Error responses
 
-Returned when the requested product does not exist.
+| Code | Meaning |
+|---|---|
+| `404 Not Found` | Requested product does not exist |
+| `400 Bad Request` | Invalid request, where applicable |
 
-400 Bad Request
+---
 
-Returned for invalid requests where applicable.
+## 🔗 Frontend–Backend Integration
 
-Frontend-Backend Integration
+Product information is loaded from the backend API rather than hardcoded in the frontend.
 
-Product information is loaded from the backend API rather than being hardcoded in the frontend.
+The frontend calls:
 
-The frontend requests:
-
+```
 GET /api/products
 GET /api/products/:slug
+```
 
-Product images, colors, variants, prices, EMI plans, and mutual-fund information are supplied by the API/database.
+Images, colors, variants, prices, EMI plans, and mutual-fund info are all supplied by the API/database.
 
-Local Setup
+---
 
-Requirements
+## 🚀 Local Setup
 
-Node.js 18+
+**Requirements:** Node.js 18+, MongoDB, npm
 
-MongoDB
+### Clone and install
 
-npm
-
-Clone and install
-
+```bash
 git clone https://github.com/Rhythem2005/ASSESEMENT-INTERN.git
 cd ASSESEMENT-INTERN
 
@@ -268,91 +243,88 @@ npm install
 
 cd ../server
 npm install
+```
 
-Configure environment variables
+### Configure environment variables
 
-Create a .env file inside server based on .env.example.
+Create a `.env` file inside `server/` based on `.env.example`:
 
+```
 MONGODB_URI=your_mongodb_connection_string
 PORT=5001
+```
 
-Seed the database
+### Seed the database
 
-From server:
+From `server/`:
 
+```bash
 npm run seed
+```
 
-Start the backend
+### Start the backend
 
+```bash
 npm run dev
+```
 
-Backend:
+Backend: `http://localhost:5001`
 
-http://localhost:5001
-
-Start the frontend
+### Start the frontend
 
 In another terminal:
 
+```bash
 cd client
 npm run dev
+```
 
-Frontend:
+Frontend: `http://localhost:5173`
 
-http://localhost:5173
+> The Vite dev server proxies `/api` requests to the backend.
 
-The Vite development server proxies /api requests to the backend.
+---
 
-Application Flow
+## 🧭 Application Flow
 
-Open the home page.
+1. Open the home page
+2. Browse available products
+3. Select a product → open its unique product URL
+4. Select the required color and storage variant
+5. Review the available EMI plans
+6. Select one EMI plan
+7. Review the selected plan in the confirmation modal
+8. Confirm the selection
 
-Browse available products.
+---
 
-Select a product.
+## ✅ Assessment Requirements Covered
 
-Open its unique product URL.
+- [x] Dynamic product listing
+- [x] Unique product detail URLs
+- [x] At least 3 products, at least 2 variants per product
+- [x] Product name, variant, MRP, selling price, and image
+- [x] Multiple selectable EMI plans
+- [x] Monthly payment, tenure, interest rate, and cashback info
+- [x] EMI plans with mutual-fund backing information
+- [x] Proceed flow for the selected EMI plan
+- [x] Backend API integration
+- [x] MongoDB database and seed script
+- [x] Responsive frontend
+- [x] Loading and error handling
 
-Select the required color and storage variant.
+---
 
-Review the available EMI plans.
+## 📝 Notes
 
-Select one EMI plan.
+This project implements the EMI-plan and mutual-fund backing representation required for the assessment. It does **not** implement real financial transactions, mutual-fund investments, KYC, payment processing, or live NAV calculations.
 
-Review the selected plan in the confirmation modal.
+---
 
-Confirm the selection.
-
-Assessment Requirements Covered
-
-Dynamic product listing
-
-Unique product detail URLs
-
-At least 3 products and at least 2 variants per product
-
-Product name, variant, MRP, selling price, and image
-
-Multiple selectable EMI plans
-
-Monthly payment, tenure, interest rate, and cashback information
-
-EMI plans represented with mutual-fund backing information
-
-Proceed flow for the selected EMI plan
-
-Backend API integration
-
-MongoDB database and seed script
-
-Responsive frontend
-
-Loading and error handling
-
-Notes
-
-The project implements the EMI-plan and mutual-fund backing representation required for the assessment. It does not implement real financial transactions, mutual-fund investments, KYC, payment processing, or live NAV calculations.
-
-License
+## 📄 License
 
 This project was created for an internship assessment.
+
+<p align="center">
+  <i>Built for the 1Fi internship assessment 🚀</i>
+</p>
