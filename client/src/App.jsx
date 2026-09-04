@@ -10,7 +10,7 @@ function App() {
           <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-[6px] bg-[#2B3A67] flex items-center justify-center text-white text-sm font-semibold">
-                E
+                1Fi
               </div>
               <span className="text-[17px] font-semibold tracking-tight">
                 1Fi-intern-assesement
@@ -20,8 +20,6 @@ function App() {
               <Link to="/" className="hover:text-[#14181F] transition-colors">
                 Shop
               </Link>
-              <span className="text-[#5B6270]">EMI Plans</span>
-              <span className="text-[#5B6270]">Support</span>
             </nav>
           </div>
         </header>
